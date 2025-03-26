@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 class ChatPage extends StatefulWidget {
@@ -18,9 +17,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final socket = WebSocket(Uri.parse('ws://localhost:10.200.75.42:8765')); 
-  
-  
+  final socket = WebSocket(Uri.parse('ws://10.200.75.42:8765'));
   final List<types.Message> _messages = [];
   final TextEditingController _messageController = TextEditingController();
   late types.User otherUser;
@@ -63,6 +60,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void onMessageReceived(String message) {
+    print(message);
     var newMessage = types.TextMessage(
       author: otherUser,
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -121,10 +119,10 @@ class _ChatPageState extends State<ChatPage> {
             child: Chat(
               messages: _messages,
               user: me,
-              showUserAvatars:true,
-              showUserNames:true,
-                onSendPressed: _handleSendPressed,
-            ),
+              showUserAvatars: true,
+              showUserNames: true,
+              onSendPressed: _handleSendPressed,
+            )
           ),
         ],
       ),
@@ -136,5 +134,5 @@ class _ChatPageState extends State<ChatPage> {
     _messageController.dispose();
     socket.close();
     super.dispose();
-  }
+  }
 }
