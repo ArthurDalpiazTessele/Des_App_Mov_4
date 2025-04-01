@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
 
   flutter_chat_ui: ^1.6.15
-  web-socket_client: ^0.2.0
   socket_io_client: ^3.0.2
+  web_socket_client: ^0.2.0
 
 dev_dependencies:
   flutter_test:

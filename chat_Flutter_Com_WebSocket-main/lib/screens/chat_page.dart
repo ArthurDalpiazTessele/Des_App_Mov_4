@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 class ChatPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final socket = WebSocket(Uri.parse('ws://10.200.75.42:8765'));
+  final socket = WebSocket(Uri.parse('ws://10.200.74.225:8765'));
   final List<types.Message> _messages = [];
   final TextEditingController _messageController = TextEditingController();
   late types.User otherUser;
@@ -26,7 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    
+
     me = types.User(
       id: widget.id,
       firstName: widget.name,
@@ -60,7 +61,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void onMessageReceived(String message) {
-    print(message);
     var newMessage = types.TextMessage(
       author: otherUser,
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -68,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
       createdAt: DateTime.now().millisecondsSinceEpoch,
       metadata: {
         'senderName': otherUser.firstName,
-        'hora':DateTime.now().millisecondsSinceEpoch.toString()
+        'hora': DateTime.now().millisecondsSinceEpoch.toString()
       },
     );
     _addMessage(newMessage);
@@ -110,7 +110,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seu Chat: ${widget.name}'),
+        title: Text('Seu Chat: ${widget.name}',
+            style: TextStyle(
+              color: Colors.white,
+            )),
         backgroundColor: Colors.deepPurple,
       ),
       body: Column(
@@ -122,7 +125,7 @@ class _ChatPageState extends State<ChatPage> {
               showUserAvatars: true,
               showUserNames: true,
               onSendPressed: _handleSendPressed,
-            )
+            ),
           ),
         ],
       ),
@@ -134,5 +137,5 @@ class _ChatPageState extends State<ChatPage> {
     _messageController.dispose();
     socket.close();
     super.dispose();
-  }
+  }
 }
