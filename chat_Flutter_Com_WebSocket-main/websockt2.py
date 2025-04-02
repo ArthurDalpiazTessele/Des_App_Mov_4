@@ -24,8 +24,8 @@ async def chat(websocket):  # Removed 'path' parameter since it's not needed
         print(f"Cliente desconectado: {cliente_id}")
 
 async def main():
-    async with websockets.serve(chat, "localhost", 8765):
-        print("Servidor WebSocket iniciado em ws://localhost:8765")
+    async with websockets.serve(chat, "10.200.70.188", 8765):
+        print("Servidor WebSocket iniciado em ws://10.200.70.188:8765")
         await asyncio.Future()  # Mantém o servidor em execução
 
 if _name_ == "_main_":
