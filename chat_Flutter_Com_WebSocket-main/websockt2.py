@@ -3,7 +3,7 @@ import websockets
 
 clientes = set()
 
-async def chat(websocket, path):
+async def chat(websocket):  # Removed 'path' parameter since it's not needed
     # Log quando um cliente se conecta
     cliente_id = id(websocket)
     print(f"Cliente conectado: {cliente_id}")
@@ -23,9 +23,10 @@ async def chat(websocket, path):
         # Log quando um cliente se desconecta
         print(f"Cliente desconectado: {cliente_id}")
 
-start_server = websockets.serve(chat, "10.200.70.188", 8765)
+async def main():
+    async with websockets.serve(chat, "localhost", 8765):
+        print("Servidor WebSocket iniciado em ws://localhost:8765")
+        await asyncio.Future()  # Mantém o servidor em execução
 
-print("Servidor WebSocket iniciado em ws://10.200.70.188:8765")
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+if _name_ == "_main_":
+    asyncio.run(main())
